@@ -4,7 +4,9 @@ ESX		= nil
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
 RegisterServerEvent('brinn_paycheck:AddMoney')
-AddEventHandler('brinn_paycheck:AddMoney',function(xPlayer, value)
+AddEventHandler('brinn_paycheck:AddMoney',function(value)
+	local _source = source
+	local xPlayer = ESX.GetPlayerFromId(source)
 	if xPlayer ~= nil then
 		MySQL.Async.fetchAll('SELECT `paycheck` FROM users WHERE identifier = @identifier', {
 			['@identifier'] = xPlayer.identifier
