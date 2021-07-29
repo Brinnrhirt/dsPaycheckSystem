@@ -1,5 +1,6 @@
 Config = {}
 Config.ReceiveInCash = true -- If its in true, you'll recieve it on cash (wallet), false it will become on bank.
+Config.UseEsExtendedType = true
 Config.NPCS =  {
     {
         model = "cs_bankman",

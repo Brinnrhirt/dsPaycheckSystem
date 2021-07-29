@@ -3,10 +3,30 @@ ESX		= nil
 
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
+if Config.UseEsExtendedType == true then
+	RegisterServerEvent('brinn_paycheck:AddMoneyEs_Extended')
+	AddEventHandler('brinn_paycheck:AddMoneyEs_Extended',function(xPlayer, value)
+		if xPlayer ~= nil then
+			MySQL.Async.fetchAll('SELECT `paycheck` FROM users WHERE identifier = @identifier', {
+				['@identifier'] = xPlayer.identifier
+			}, function(result)
+				local paycheckbd = {}
+				if result[1].paycheck ~= nil then
+					paycheckbd = json.decode(result[1].paycheck)
+				end
+			MySQL.Async.fetchAll("UPDATE users SET paycheck = @paycheck WHERE identifier = @identifier",{
+				['@identifier'] = xPlayer.identifier,
+				['@paycheck'] = paycheckbd + (value)
+			})
+			end)
+		else 
+			print(('Someone is trying to do something shady. [BRINN_PAYCHECK]'):format(xPlayer.identifier))
+		end
+	end)
+end
+
 RegisterServerEvent('brinn_paycheck:AddMoney')
-AddEventHandler('brinn_paycheck:AddMoney',function(value)
-	local _source = source
-	local xPlayer = ESX.GetPlayerFromId(source)
+AddEventHandler('brinn_paycheck:AddMoney',function(xPlayer, value)
 	if xPlayer ~= nil then
 		MySQL.Async.fetchAll('SELECT `paycheck` FROM users WHERE identifier = @identifier', {
 			['@identifier'] = xPlayer.identifier
