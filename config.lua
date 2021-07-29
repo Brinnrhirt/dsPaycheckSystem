@@ -1,6 +1,6 @@
 Config = {}
 Config.ReceiveInCash = true -- If its in true, you'll recieve it on cash (wallet), false it will become on bank.
-Config.UseEsExtendedType = true -- IF true, enable the trigger so you can place it in your es_extended 
+Config.UseEsExtendedType = true -- IF true, enable the trigger so you can place it in your es_extended, false it will disable it
 Config.NPCS =  {
     {
         model = "cs_bankman",
