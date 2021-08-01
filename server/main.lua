@@ -26,7 +26,9 @@ if Config.UseEsExtendedType == true then
 end
 
 RegisterServerEvent('brinn_paycheck:AddMoney')
-AddEventHandler('brinn_paycheck:AddMoney',function(xPlayer, value)
+AddEventHandler('brinn_paycheck:AddMoney',function(source, value)
+	local _source = source
+	local xPlayer = ESX.GetPlayerFromId(source)
 	if xPlayer ~= nil then
 		MySQL.Async.fetchAll('SELECT `paycheck` FROM users WHERE identifier = @identifier', {
 			['@identifier'] = xPlayer.identifier
