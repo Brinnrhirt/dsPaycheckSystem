@@ -1,0 +1,1 @@
+ALTER TABLE `users` ADD COLUMN `collectmoney` int(9) NOT NULL DEFAULT 0;
