@@ -3,7 +3,7 @@ ESX		= nil
 
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
-if Config.UseEsExtendedType == true then
+if Config.UseEsExtendedType then
 	RegisterServerEvent('brinn_paycheck:AddMoneyEs_Extended')
 	AddEventHandler('brinn_paycheck:AddMoneyEs_Extended',function(xPlayer, value)
 		if xPlayer ~= nil then
