@@ -27,11 +27,11 @@ RegisterNetEvent('brinn_paycheck:notification')
 AddEventHandler('brinn_paycheck:notification', function(msg,type)
 --	Types used: (error | success)
 --	print(msg)
---	exports['mythic_notify']:SendAlert(msg,type)
-        exports.brinnNotify:SendNotification({                    
-            text = '<b><i class="fas fa-bell"></i> NOTIFICACIÓN</span></b></br><span style="color: #a9a29f;">'..msg..'',
-            type = type,
-            timeout = 3000,
-            layout = "centerRight"
-        })
+	--exports['mythic_notify']:DoHudText(type,msg)
+    exports.brinnNotify:SendNotification({                    
+        text = '<b><i class="fas fa-bell"></i> NOTIFICACIÓN</span></b></br><span style="color: #a9a29f;">'..msg..'',
+        type = type,
+        timeout = 3000,
+        layout = "centerRight"
+    })
 end)
