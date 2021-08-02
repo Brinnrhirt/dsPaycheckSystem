@@ -4,15 +4,15 @@ Config.UseEsExtendedType = true -- IF true, enable the trigger so you can place 
 Config.NPCS =  {
     {
         model = "cs_bankman",
-        coords = vector3(-552.53454589844,-191.21502685547,37.219646453857),  
+        coords = vector3(-552.90313720703,-192.07667541504,37.219646453857),  
         heading = 209.4,
         animDict = "amb@world_human_cop_idles@male@idle_b",
         animName = "idle_e"
     },
     -- {
-    --      Model = "cs_bankman", -- ped name
-    --      Coords = vector3(0,0,0),  -- coords
-    --      Heading = 0.0 -- heading
+    --      model = "cs_bankman", -- https://wiki.rage.mp/index.php?title=Peds
+    --      coords = vector3(0,0,0),  -- coords
+    --      heading = 0.0 -- heading
     --      animDict = "", -- https://pastebin.com/6mrYTdQv
     --      animName = "" -- https://alexguirre.github.io/animations-list/
     -- }
