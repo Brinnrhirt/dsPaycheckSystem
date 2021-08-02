@@ -1,10 +1,9 @@
-ESX		= nil
-
-
+ESX	= nil
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
+
 if Config.UseEsExtendedType then
-	RegisterServerEvent('brinn_paycheck:AddMoneyEs_Extended')
+	RegisterNetEvent('brinn_paycheck:AddMoneyEs_Extended')
 	AddEventHandler('brinn_paycheck:AddMoneyEs_Extended',function(xPlayer, value)
 		if xPlayer ~= nil then
 			MySQL.Async.fetchAll('SELECT `paycheck` FROM users WHERE identifier = @identifier', {
@@ -25,7 +24,8 @@ if Config.UseEsExtendedType then
 	end)
 end
 
-RegisterServerEvent('brinn_paycheck:AddMoney')
+
+RegisterNetEvent('brinn_paycheck:AddMoney')
 AddEventHandler('brinn_paycheck:AddMoney',function(source, value)
 	local _source = source
 	local xPlayer = ESX.GetPlayerFromId(source)
