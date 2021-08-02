@@ -1,65 +1,20 @@
 ESX = nil
-local distancecheck = false
 
 Citizen.CreateThread(function()
 	while ESX == nil do
 		TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 		Citizen.Wait(0)
 	end
+
+    ESXLoaded = true
 end)
-
-
-
-
-
-Citizen.CreateThread(function()
-
-	while true do
-		Citizen.Wait(100)
-		for k,v in pairs (Config.NPCS) do
-			local id = GetEntityCoords(PlayerPedId())
-			local dist = #(id - v.coords)
-			if dist < 10 and distancecheck == false then
-				distancecheck = true
-				print('not spawned')
-				TriggerEvent('brinn_paycheck:SpawnPed',v.model, v.coords, v.heading, v.animDict, v.animName)
-				print('spawned')
-				Wait(5000)
-			end
-			if dist >= 10 and dist <= 10 + 1 then
-				distancecheck = false
-				DeletePed(ped)
-			end
-		end
-	end
-end)
-
-RegisterNetEvent('brinn_paycheck:SpawnPed')
-AddEventHandler('brinn_paycheck:SpawnPed',function(model, coords, heading, animDict, animName)
-	if distancecheck == false then
-		RequestModel(GetHashKey(model))
-		while not HasModelLoaded(GetHashKey(model)) do
-			Citizen.Wait(1)
-		end
-		ped = CreatePed(5, GetHashKey(model), coords, heading, false, false)
-		FreezeEntityPosition(ped, true) 
-		SetEntityInvincible(ped, true) 
-		SetBlockingOfNonTemporaryEvents(ped, true) 
-		RequestAnimDict(animDict)
-		while not HasAnimDictLoaded(animDict) do
-			Citizen.Wait(1)
-		end
-		TaskPlayAnim(ped, animDict, animName, 8.0, 0, -1, 1, 0, 0, 0)
-	end
-end)
-
 
 
 Citizen.CreateThread(function()
 	local bossMech = {
 		`cs_bankman`,
 	}
-	exports['bt-target']:AddTargetModel(bossMech, {
+	exports['qtarget']:AddTargetModel(bossMech, {
 		options = {
 			{
 				event = "brinn_paycheck:Menu",
@@ -72,6 +27,44 @@ Citizen.CreateThread(function()
 		distance = 3.5
 	})
 end)
+
+
+
+
+Citizen.CreateThread(function()
+	Citizen.Wait(100)
+	for k,v in pairs (Config.NPCS) do
+		while not ESXLoaded do Wait(0) end
+		if DoesEntityExist(ped) then
+			DeletePed(ped)
+		end
+		Wait(250)
+		ped = CreatingPed(v.model, v.coords, v.heading)
+	end
+end)
+
+function CreatingPed(hash, coords, heading)
+    RequestModel(GetHashKey(hash))
+    while not HasModelLoaded(GetHashKey(hash)) do
+        Wait(5)
+    end
+
+    local ped = CreatePed(5, hash, coords, false, false)
+    SetEntityHeading(ped, heading)
+    SetEntityAsMissionEntity(ped, true, true)
+    SetPedHearingRange(ped, 0.0)
+    SetPedSeeingRange(ped, 0.0)
+    SetPedAlertness(ped, 0.0)
+    SetPedFleeAttributes(ped, 0, 0)
+	FreezeEntityPosition(ped, true) 
+	SetEntityInvincible(ped, true) 
+    SetBlockingOfNonTemporaryEvents(ped, true)
+    SetPedCombatAttributes(ped, 46, true)
+    SetPedFleeAttributes(ped, 0, 0)
+    return ped
+end
+
+
 
 
 RegisterNetEvent('brinn_paycheck:Menu')
@@ -143,22 +136,3 @@ function OpenPaycheckMenu()
 		menu.close()
 	end)
 end
-
-
-
-
-      
-Citizen.CreateThread(function()
-
-    for _, info in pairs(Config.Blips) do
-      info.blip = AddBlipForCoord(info.x, info.y, info.z)
-      SetBlipSprite(info.blip, info.id)
-      SetBlipDisplay(info.blip, 4)
-      SetBlipScale(info.blip, 0.6)
-      SetBlipColour(info.blip, info.colour)
-      SetBlipAsShortRange(info.blip, true)
-	  BeginTextCommandSetBlipName("STRING")
-      AddTextComponentString(info.title)
-      EndTextCommandSetBlipName(info.blip)
-    end
-end)
