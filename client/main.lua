@@ -39,11 +39,11 @@ Citizen.CreateThread(function()
 			DeletePed(ped)
 		end
 		Wait(250)
-		ped = CreatingPed(v.model, v.coords, v.heading)
+		ped = CreatingPed(v.model, v.coords, v.heading, v.animDict, v.animName)
 	end
 end)
 
-function CreatingPed(hash, coords, heading)
+function CreatingPed(hash, coords, heading, animDict, animName)
     RequestModel(GetHashKey(hash))
     while not HasModelLoaded(GetHashKey(hash)) do
         Wait(5)
@@ -61,10 +61,11 @@ function CreatingPed(hash, coords, heading)
     SetBlockingOfNonTemporaryEvents(ped, true)
     SetPedCombatAttributes(ped, 46, true)
     SetPedFleeAttributes(ped, 0, 0)
+	while not TaskPlayAnim(ped, animDict, animName, 8.0, 1.0, -1, 17, 0, 0, 0, 0) do
+		Wait(1000)
+	end
     return ped
 end
-
-
 
 
 RegisterNetEvent('brinn_paycheck:Menu')
