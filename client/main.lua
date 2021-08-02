@@ -14,7 +14,7 @@ Citizen.CreateThread(function()
 	local bossMech = {
 		`cs_bankman`,
 	}
-	exports['qtarget']:AddTargetModel(bossMech, {
+	exports['bt-target']:AddTargetModel(bossMech, {
 		options = {
 			{
 				event = "brinn_paycheck:Menu",
@@ -42,6 +42,7 @@ Citizen.CreateThread(function()
 		ped = CreatingPed(v.model, v.coords, v.heading, v.animDict, v.animName)
 	end
 end)
+
 
 function CreatingPed(hash, coords, heading, animDict, animName)
     RequestModel(GetHashKey(hash))
