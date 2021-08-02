@@ -1,15 +1,13 @@
-fx_version 'cerulean'
-game 'gta5'
-description 'Brinnrhirt Paycheck System'
-version '1.0.0'
-
-client_scripts {
-    'config.lua',
-    'server/main.lua'
-}
+fx_version 'adamant'
+game 'common'
 
 server_scripts {
     'config.lua',
-    'client/main.lua',
+    'server/main.lua',
     '@mysql-async/lib/MySQL.lua'
+}
+
+client_scripts {
+    'config.lua',
+    'client/main.lua'
 }
