@@ -11,10 +11,12 @@ end)
 
 
 Citizen.CreateThread(function()
-	local bossMech = {
-		`cs_bankman`,
-	}
-	exports['bt-target']:AddTargetModel(bossMech, {
+	local PedsTarget = {}
+	for k,v in pairs (Config.NPCS) do
+		PedsTarget = {v.model}
+	end
+
+	exports['qtarget']:AddTargetModel(PedsTarget, {
 		options = {
 			{
 				event = "brinn_paycheck:Menu",
