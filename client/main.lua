@@ -15,7 +15,6 @@ Citizen.CreateThread(function()
 	for k,v in pairs (Config.NPCS) do
 		PedsTarget = {v.model}
 	end
-
 	exports['qtarget']:AddTargetModel(PedsTarget, {
 		options = {
 			{
