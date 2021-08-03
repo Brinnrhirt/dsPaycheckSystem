@@ -16,7 +16,7 @@ Citizen.CreateThread(function()
 	for k,v in pairs (Config.NPCS) do
 		PedsTarget = {v.model}
 	end
-	exports['qtarget']:AddTargetModel(PedsTarget, {
+	exports[Config.Target]:AddTargetModel(PedsTarget, {
 		options = {
 			{
 				event = "brinn_paycheck:Menu",
