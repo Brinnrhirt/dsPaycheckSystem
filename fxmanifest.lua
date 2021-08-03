@@ -1,7 +1,5 @@
 fx_version 'adamant'
-game 'gta5'
-
-description 'Paycheck V2 Made by Brinnrhirt '
+game 'common'
 
 server_scripts {
     'config.lua',
