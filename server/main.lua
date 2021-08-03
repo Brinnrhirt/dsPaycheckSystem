@@ -87,8 +87,7 @@ AddEventHandler('brinn_paycheck:withdrawMoney', function(value)
 	end
 end)
 
-RegisterServerEvent('brinn_paycheck:server:GetDataMoney')
-AddEventHandler('brinn_paycheck:server:GetDataMoney', function()
+ESX.RegisterServerCallback('brinn_paycheck:server:GetDataMoney', function(source,cb)
 	local _source = source
 	local xPlayer = ESX.GetPlayerFromId(source)
 	if xPlayer ~= nil then
@@ -100,9 +99,7 @@ AddEventHandler('brinn_paycheck:server:GetDataMoney', function()
 				if result[1].paycheck ~= nil then
 					paycheckdata = json.decode(result[1].paycheck)
 				end
-				TriggerClientEvent('brinn_paycheck:GetDataMoney',_source,paycheckdata)
-			else
-				TriggerClientEvent('brinn_paycheck:GetDataMoney',_source,0)
+				cb(paycheckdata)
 			end	
 		end)
 	end
