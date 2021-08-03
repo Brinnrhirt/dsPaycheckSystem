@@ -1,14 +1,30 @@
+local paycheckdata
 ESX = nil
+
+
 
 Citizen.CreateThread(function()
 	while ESX == nil do
 		TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 		Citizen.Wait(0)
 	end
-
     ESXLoaded = true
 end)
 
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(Config.Timeout)
+		while not ESXLoaded do Wait(0) end
+        if ESXLoaded then
+            TriggerServerEvent('brinn_paycheck:server:GetDataMoney')
+        end
+    end
+end)
+
+RegisterNetEvent('brinn_paycheck:GetDataMoney')
+AddEventHandler('brinn_paycheck:GetDataMoney', function(data)
+	paycheckdata =  json.decode(data)
+end)
 
 Citizen.CreateThread(function()
 	local PedsTarget = {}
@@ -78,16 +94,19 @@ end)
 
 function OpenPaycheckMenu()
 	local elements = {
-		{label = '&nbsp;&nbsp;<span style="color:#13ea13 ;"> Withdraw All </span>', value = 'withdraw_all'},
-		{label = '&nbsp;&nbsp;<span style="color:#13ea13 ;"> Withdraw an amount </span>', value = 'withdraw_quantity'},
-		{label = '&nbsp;&nbsp;<span style="color:#EA1313;"> Close</span>' , value = 'Salir'},
+		{label = '&nbsp;&nbsp;<span style="color:#13ea13 ;"> You have ' ..paycheckdata..'$ to collect</span>'},
+		{label = 'Withdraw All', value = 'withdraw_all'},
 	}
+	if Config.WithdrawQuantity then
+		table.insert(elements, {label = 'Withdraw an amount', value = 'withdraw_quantity'})
+	end
 	ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'paycheck_actions', {
 				title    = 'City Hall',
-				align    = 'top-left',
+				align    = 'center-left',
 				elements = elements
 			}, function(data, menu)
 					if data.current.value == 'withdraw_all' then
+						menu.close()
 						exports.rprogress:Custom({
 							Duration = 5000,
 							Label = "Cashing out...",
@@ -103,7 +122,6 @@ function OpenPaycheckMenu()
 						})
 						Citizen.Wait(5000)
 						TriggerServerEvent('brinn_paycheck:Payout')
-						menu.close()
 					elseif data.current.value == 'withdraw_quantity'then
 						ESX.UI.Menu.Open('dialog', GetCurrentResourceName(), 'withdraw_quantity_count', {
 							title = 'Quantity'

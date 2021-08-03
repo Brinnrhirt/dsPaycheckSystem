@@ -87,9 +87,29 @@ AddEventHandler('brinn_paycheck:withdrawMoney', function(value)
 	end
 end)
 
+RegisterServerEvent('brinn_paycheck:server:GetDataMoney')
+AddEventHandler('brinn_paycheck:server:GetDataMoney', function()
+	local _source = source
+	local xPlayer = ESX.GetPlayerFromId(source)
+	if xPlayer ~= nil then
+		MySQL.Async.fetchAll("SELECT `paycheck` FROM users WHERE identifier = @identifier", {
+			['@identifier'] = xPlayer.identifier
+		}, function(result)
+			if result[1] ~= nil then
+				local paycheckdata = {}
+				if result[1].paycheck ~= nil then
+					paycheckdata = json.decode(result[1].paycheck)
+				end
+				TriggerClientEvent('brinn_paycheck:GetDataMoney',_source,paycheckdata)
+			else
+				TriggerClientEvent('brinn_paycheck:GetDataMoney',_source,0)
+			end	
+		end)
+	end
+end)
 
- RegisterNetEvent("brinn_paycheck:Payout")
- AddEventHandler("brinn_paycheck:Payout", function()
+RegisterNetEvent("brinn_paycheck:Payout")
+AddEventHandler("brinn_paycheck:Payout", function()
 	local _source = source
     local xPlayer  = ESX.GetPlayerFromId(_source)
 	if xPlayer ~= nil then
