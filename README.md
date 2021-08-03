@@ -10,6 +10,9 @@ https://discord.gg/tbZEuU2Zmm
 * Added multiples NPC's and multiples Blips for the paycheck system
 * Added an option to get the paycheck on cash or bank
 * Added an option for multiples notification systems, configurable in the config.lua
+* Adding an option to withdraw all or not
+* Showing the money in the interface
+
 
 # Trigger
 The trigger used for adding the quantity its:
