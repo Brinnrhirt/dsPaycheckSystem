@@ -19,7 +19,7 @@ Citizen.CreateThread(function()
 	exports[Config.Target]:AddTargetModel(PedsTarget, {
 		options = {
 			{
-				event = "brinn_paycheck:Menu",
+				event = "dx-paycheck:Menu",
 				icon = "fas fa-car",
 				label = "Collect salary",
 			},
@@ -71,15 +71,15 @@ function CreatingPed(hash, coords, heading, animDict, animName)
 end
 
 
-RegisterNetEvent('brinn_paycheck:Menu')
-AddEventHandler('brinn_paycheck:Menu',function()
+RegisterNetEvent('dx-paycheck:Menu')
+AddEventHandler('dx-paycheck:Menu',function()
 	OpenPaycheckMenu()
 end)
 
 
 function OpenPaycheckMenu()
 	local elements = {}
-	ESX.TriggerServerCallback('brinn_paycheck:server:GetDataMoney', function(count)
+	ESX.TriggerServerCallback('dx-paycheck:server:GetDataMoney', function(count)
 		paycheckdata = json.decode(count)
 		table.insert(elements,{label = '&nbsp;&nbsp;<span style="color:#13ea13 ;"> You have ' ..paycheckdata..'$ to collect</span>'})
 		table.insert(elements,{label = 'Withdraw All', value = 'withdraw_all'})
@@ -107,7 +107,7 @@ function OpenPaycheckMenu()
 								}
 							})
 							Citizen.Wait(5000)
-							TriggerServerEvent('brinn_paycheck:Payout')
+							TriggerServerEvent('dx-paycheck:Payout')
 						elseif data.current.value == 'withdraw_quantity'then
 							ESX.UI.Menu.Open('dialog', GetCurrentResourceName(), 'withdraw_quantity_count', {
 								title = 'Quantity'
@@ -133,7 +133,7 @@ function OpenPaycheckMenu()
 										}
 									})
 									Citizen.Wait(5000)
-									TriggerServerEvent('brinn_paycheck:withdrawMoney', count)
+									TriggerServerEvent('dx-paycheck:withdrawMoney', count)
 								end
 							end)
 						elseif data.current.value == 'Salir' then

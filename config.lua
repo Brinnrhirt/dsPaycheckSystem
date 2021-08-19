@@ -26,8 +26,8 @@ Config.Blips = {
 }
 
 --	Your Notification System
-RegisterNetEvent('brinn_paycheck:notification')
-AddEventHandler('brinn_paycheck:notification', function(msg,type)
+RegisterNetEvent('dx-paycheck:notification')
+AddEventHandler('dx-paycheck:notification', function(msg,type)
 --	Types used: (error | success)
 	--exports['mythic_notify']:DoHudText(type,msg)
     exports.brinnNotify:SendNotification({                    

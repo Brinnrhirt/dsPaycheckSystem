@@ -1,5 +1,5 @@
 # Paycheck System
-Paycheck System script for ESX made by Brinnrhirt
+Paycheck System script for ESX made by Dessaux
 
 # Discord
 Join here to report bugs or ask for help
@@ -17,9 +17,9 @@ https://discord.gg/tbZEuU2Zmm
 # Trigger
 The trigger used for adding the quantity its:
 * Server Side
-"TriggerEvent('brinn_paycheck:AddMoney',source, salary)"
+"TriggerEvent('dx-paycheck:AddMoney',source, salary)"
 * Client Side
-"TriggerClientEvent('brinn_paycheck:AddMoney', salary)"
+"TriggerClientEvent('dx-paycheck:AddMoney', salary)"
 
 If you want to make it for the es_extended you have to make some adjustments for the trigger
 To make it simple you can go to my discord and write me there if you want to do it.
