@@ -6,6 +6,7 @@ description 'Paycheck System for ESX'
 version '1.2.1'
 
 shared_scripts {
+    '@ox_lib/init.lua', -- Remove it if you're not going to use ox_lib
     '@es_extended/imports.lua', -- Only for Legacy ESX, remove if you're not using it
     'config/config.lua',
     'config/locale.lua',

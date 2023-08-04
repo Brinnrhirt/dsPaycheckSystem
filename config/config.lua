@@ -8,7 +8,7 @@ Config.Timeout = 5000 -- Timeout for the citizen, briefly, 5 secs.
 Config.Target = true -- To use the Target System, if you have this on true, put Config.DrawText in false
 Config.TargetSystem = 'qtarget' -- Config your exports target (qtarget, ox_target or custom)
 Config.DrawText = false -- To use the DrawText System, if you have this on true, put the Config.Target in false
-
+Config.Menu = 'ox_lib' -- (esx or ox_lib)
 Config.NPCS =  {
     {
         model = "cs_bankman",

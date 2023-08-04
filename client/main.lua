@@ -126,11 +126,15 @@ end
 
 RegisterNetEvent('dsPaycheckSystem:Menu')
 AddEventHandler('dsPaycheckSystem:Menu',function()
-	OpenPaycheckMenu()
+	if Config.Menu == 'esx' then 
+		OpenPaycheckMenuDefault()
+	elseif Config.Menu == 'ox_lib' then
+		OpenPaycheckMenuOX()
+	end
 end)
 
 
-function OpenPaycheckMenu()
+function OpenPaycheckMenuDefault()
 	local elements = {}
 	ESX.TriggerServerCallback('dsPaycheckSystem:server:GetDataMoney', function(count)
 		paycheckdata = json.decode(count)
@@ -197,4 +201,68 @@ function OpenPaycheckMenu()
 			menu.close()
 		end)
 	end)
+end
+
+
+function OpenPaycheckMenuOX() 
+	ESX.TriggerServerCallback('dsPaycheckSystem:server:GetDataMoney', function(count)
+		paycheckdata = json.decode(count) 
+		lib.registerContext({
+			id = 'paycheckMenu',
+			title = 'Paycheck Menu',
+			options = {
+				{
+					title = _U('menu.money_information', paycheckdata),
+				},
+				{
+					title = _U('menu.withdraw_all'),
+					description = _U('menu.withdraw_all_desc'),
+					icon = 'circle',
+					onSelect = function()
+						exports.rprogress:Custom({
+							Duration = 5000,
+							Label = _U('menu.cashing_out'),
+							Animation = {
+								scenario = "WORLD_HUMAN_CLIPBOARD", 
+								animationDictionary = "idle_a", 
+							},
+							DisableControls = {
+								Mouse = false,
+								Player = true,
+								Vehicle = true
+							}
+						})
+						Citizen.Wait(5000)
+						TriggerServerEvent('dsPaycheckSystem:Payout')
+					end,
+				},
+				{
+					title = _U('menu.withdraw_quantity'),
+					description = _U('menu.withdraw_quantity_desc'),
+					icon = 'circle',
+					onSelect = function()
+						local input = lib.inputDialog('payCheckAmount', _U('quantity_imput'))
+						if not input then return end
+						print(json.encode(input), input[1])
+						exports.rprogress:Custom({
+							Duration = 5000,
+							Label = _U('menu.cashing_out'),
+							Animation = {
+								scenario = "WORLD_HUMAN_CLIPBOARD", 
+								animationDictionary = "idle_a", 
+							},
+							DisableControls = {
+								Mouse = false,
+								Player = true,
+								Vehicle = true
+							}
+						})
+						Citizen.Wait(5000)
+						TriggerServerEvent('dsPaycheckSystem:withdrawMoney', tonumber(input))
+					end,
+				},
+			}
+		})
+	end)
+	lib.showContext('paycheckMenu')
 end
