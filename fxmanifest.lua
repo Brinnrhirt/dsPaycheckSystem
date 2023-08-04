@@ -21,3 +21,10 @@ client_scripts {
     'config.lua',
     'client/main.lua'
 }
+escrow_ignore {
+    'config/*.lua',
+    'locales/*.lua',
+    'client/*/lua',
+    'server/*.lua',
+    'locales/*.lua'
+}
