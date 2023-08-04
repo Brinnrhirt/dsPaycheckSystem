@@ -3,7 +3,7 @@ game 'gta5'
 lua54 'yes'
 author 'Brinnrhirt'
 description 'Paycheck System for ESX'
-version '1.2.1'
+version '1.2.2'
 
 shared_scripts {
     '@ox_lib/init.lua', -- Remove it if you're not going to use ox_lib
