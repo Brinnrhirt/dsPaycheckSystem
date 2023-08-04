@@ -1,9 +1,14 @@
 Config = {}
+Config.Locale = 'en'
+Config.ESXOldVersion = false
 Config.ReceiveInCash = true -- If its in true, you'll recieve it on cash (wallet), false it will become on bank.
 Config.UseEsExtendedType = true -- IF true, enable the trigger so you can place it in your es_extended, false it will disable it
 Config.WithdrawQuantity = true
 Config.Timeout = 5000 -- Timeout for the citizen, briefly, 5 secs.
-Config.Target = 'qtarget' -- Config your exports target (bt-target or qtarget)
+Config.Target = true -- To use the Target System, if you have this on true, put Config.DrawText in false
+Config.TargetSystem = 'qtarget' -- Config your exports target (qtarget, ox_target or custom)
+Config.DrawText = false -- To use the DrawText System, if you have this on true, put the Config.Target in false
+
 Config.NPCS =  {
     {
         model = "cs_bankman",
@@ -26,8 +31,8 @@ Config.Blips = {
 }
 
 --	Your Notification System
-RegisterNetEvent('dx-paycheck:notification')
-AddEventHandler('dx-paycheck:notification', function(msg,type)
+RegisterNetEvent('dsPaycheckSystem:notification')
+AddEventHandler('dsPaycheckSystem:notification', function(msg,type)
 --	Types used: (error | success)
 	--exports['mythic_notify']:DoHudText(type,msg)
     -- ESX.ShowNotification(msg)

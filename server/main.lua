@@ -3,8 +3,8 @@ TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
 
 if Config.UseEsExtendedType then
-	RegisterNetEvent('dx-paycheck:AddMoneyEs_Extended')
-	AddEventHandler('dx-paycheck:AddMoneyEs_Extended',function(xPlayer, value)
+	RegisterNetEvent('dsPaycheckSystem:AddMoneyEs_Extended')
+	AddEventHandler('dsPaycheckSystem:AddMoneyEs_Extended',function(xPlayer, value)
 		if xPlayer ~= nil then
 			MySQL.Async.fetchAll('SELECT `paycheck` FROM users WHERE identifier = @identifier', {
 				['@identifier'] = xPlayer.identifier
@@ -19,14 +19,14 @@ if Config.UseEsExtendedType then
 			})
 			end)
 		else 
-			print(('Someone is trying to do something shady. [dx-PAYCHECK]'):format(xPlayer.identifier))
+			print(('Someone is trying to do something shady. [dsPaycheckSystem]'):format(xPlayer.identifier))
 		end
 	end)
 end
 
 
-RegisterNetEvent('dx-paycheck:AddMoney')
-AddEventHandler('dx-paycheck:AddMoney',function(source, value)
+RegisterNetEvent('dsPaycheckSystem:AddMoney')
+AddEventHandler('dsPaycheckSystem:AddMoney',function(source, value)
 	local _source = source
 	local xPlayer = ESX.GetPlayerFromId(source)
 	if xPlayer ~= nil then
@@ -43,13 +43,13 @@ AddEventHandler('dx-paycheck:AddMoney',function(source, value)
 		})
 		end)
 	else 
-		print(('Someone is trying to do something shady. [dx-PAYCHECK]'):format(xPlayer.identifier))
+		print(('Someone is trying to do something shady. [dsPaycheckSystem]'):format(xPlayer.identifier))
 	end
 end)
 
 
-RegisterNetEvent('dx-paycheck:withdrawMoney')
-AddEventHandler('dx-paycheck:withdrawMoney', function(value)
+RegisterNetEvent('dsPaycheckSystem:withdrawMoney')
+AddEventHandler('dsPaycheckSystem:withdrawMoney', function(value)
 	local _source = source
 	local xPlayer = ESX.GetPlayerFromId(source)
 	if xPlayer ~= nil then
@@ -72,22 +72,18 @@ AddEventHandler('dx-paycheck:withdrawMoney', function(value)
 					else
 						xPlayer.addAccountMoney('bank', value)
 					end
-					local msg1 = 'You recollect '..value..'$'
-					local type = 'success'
-					TriggerClientEvent('dx-paycheck:notification',_source,msg1,type)
+					TriggerClientEvent('dsPaycheckSystem:notification',_source,_U("success.payout_quantity", value),'success')
 				else
-					local msg2 = 'You dont have enough money to collect that.'
-					local type2 = 'error'
-					TriggerClientEvent('dx-paycheck:notification',_source,msg2,type2)
+					TriggerClientEvent('dsPaycheckSystem:notification',_source,,U('error.payout_quantity'),'error')
 				end
 			end
 		end)
 	else
-		print(('Someone is trying to do something shady. [dx-PAYCHECK]'):format(xPlayer.identifier))
+		print(('Someone is trying to do something shady. [dsPaycheckSystem]'):format(xPlayer.identifier))
 	end
 end)
 
-ESX.RegisterServerCallback('dx-paycheck:server:GetDataMoney', function(source,cb)
+ESX.RegisterServerCallback('dsPaycheckSystem:server:GetDataMoney', function(source,cb)
 	local _source = source
 	local xPlayer = ESX.GetPlayerFromId(source)
 	if xPlayer ~= nil then
@@ -105,8 +101,8 @@ ESX.RegisterServerCallback('dx-paycheck:server:GetDataMoney', function(source,cb
 	end
 end)
 
-RegisterNetEvent("dx-paycheck:Payout")
-AddEventHandler("dx-paycheck:Payout", function()
+RegisterNetEvent("dsPaycheckSystem:Payout")
+AddEventHandler("dsPaycheckSystem:Payout", function()
 	local _source = source
     local xPlayer  = ESX.GetPlayerFromId(_source)
 	if xPlayer ~= nil then
@@ -127,16 +123,12 @@ AddEventHandler("dx-paycheck:Payout", function()
 					else
 						xPlayer.addAccountMoney('bank', paycheckbd)
 					end
-					local msg3 = 'All your paycheck its '..paycheckbd..'$'
-					local type3 = 'success'
-					TriggerClientEvent('dx-paycheck:notification',_source,msg3,type3)
+					TriggerClientEvent('dsPaycheckSystem:notification',_source,_U('success.payout_all', paycheckdb),'success')
 				else
-					local msg4 = 'You dont have anything to collect.'
-					local type4 = 'error'
-					TriggerClientEvent('dx-paycheck:notification',_source,msg4,type4)
+					TriggerClientEvent('dsPaycheckSystem:notification',_source,U('error.payout_all'),'error')
 				end
 		end)
 	else
-		print(('Someone is trying to do something shady. [dx-PAYCHECK]'):format(xPlayer.identifier))
+		print(('Someone is trying to do something shady. [dsPaycheckSystem]'):format(xPlayer.identifier))
 	end
 end)

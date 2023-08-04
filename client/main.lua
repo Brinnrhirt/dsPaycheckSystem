@@ -1,42 +1,95 @@
 local paycheckdata
-ESX = nil
+if Config.ESXOldVersion then
+	ESX = nil
+	Citizen.CreateThread(function()
+		while ESX == nil do
+			TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+			Citizen.Wait(0)
+		end
+	end)
+end
 
 
-
-Citizen.CreateThread(function()
-	while ESX == nil do
-		TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
-		Citizen.Wait(0)
-	end
-    ESXLoaded = true
-end)
-
-Citizen.CreateThread(function()
-	local PedsTarget = {}
-	for k,v in pairs (Config.NPCS) do
-		PedsTarget = {v.model}
-	end
-	exports[Config.Target]:AddTargetModel(PedsTarget, {
-		options = {
-			{
-				event = "dx-paycheck:Menu",
+if Config.Target then
+	Citizen.CreateThread(function()
+		local PedsTarget = {}
+		for k,v in pairs (Config.NPCS) do
+			PedsTarget = {v.model}
+		end
+		if Config.TargetSystem == 'qtarget' then
+			exports['qtarget']:AddTargetModel(PedsTarget, {
+				options = {
+					{
+						label = _U('target.collect_salary'),
+						icon = "fas fa-car",
+						event = "dsPaycheckSystem:Menu",
+					},
+					
+				},
+				job = {"all"},
+				distance = 3.5
+			})
+		elseif Config.TargetSystem == 'ox_target' then
+			local options = {
+				label = _U('target.collect_salary'),
 				icon = "fas fa-car",
-				label = "Collect salary",
-			},
-			
-		},
-		job = {"all"},
-		distance = 3.5
-	})
-end)
+				event = "dsPaycheckSystem:Menu",
 
+			}
+			exports.ox_target:addModel(PedsTarget, options)
+		elseif Config.TargetSystem == 'custom' then
+			-- Insert Your Custom Code Here
+		end
+	end)
+end
+
+if Config.DrawText then
+	function DrawText3Ds(x, y, z, text)
+		SetTextScale(0.35, 0.35)
+		SetTextFont(4)
+		SetTextProportional(1)
+		SetTextColour(255, 255, 255, 215)
+		SetTextEntry("STRING")
+		SetTextCentre(true)
+		AddTextComponentString(text)
+		SetDrawOrigin(x,y,z, 0)
+		DrawText(0.0, 0.0)
+		local factor = (string.len(text)) / 370
+		DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 75)
+		ClearDrawOrigin()
+	end
+	Citizen.CreateThread(function()
+		while Config.DrawText do
+			Citizen.Wait(5)
+
+			local x, y, z = table.unpack(GetEntityCoords(PlayerPedId()))
+
+			for k, v in ipairs(Config.NPCS) do
+
+				local dx, dy, dz = table.unpack(v.coords)
+				local distance = GetDistanceBetweenCoords(x, y, z, dx, dy, dz, false)
+
+				if distance <= 5.0 then
+					DrawMarker(27, dx, dy, dz, 0.0, 0.0, 0.0, 0, 0.0, 0.0, 1.5, 1.5, 1.0, 255, 255, 255, 100, false, true, 2, true, false, false, false)
+					if distance <= 1.5 then
+						DrawText3Ds(dx, dy, dz + 1, _U('drawtext.collect_salary'))
+						if IsControlJustReleased(0, 38) then
+							OpenPaycheckMenu()
+						end
+					end
+				end
+
+			end
+		end
+	end)
+end
 
 
 
 Citizen.CreateThread(function()
 	Citizen.Wait(100)
 	for k,v in pairs (Config.NPCS) do
-		while not ESXLoaded do Wait(0) end
+		while not ESX do Wait(0) end
 		if DoesEntityExist(ped) then
 			DeletePed(ped)
 		end
@@ -71,23 +124,24 @@ function CreatingPed(hash, coords, heading, animDict, animName)
 end
 
 
-RegisterNetEvent('dx-paycheck:Menu')
-AddEventHandler('dx-paycheck:Menu',function()
+RegisterNetEvent('dsPaycheckSystem:Menu')
+AddEventHandler('dsPaycheckSystem:Menu',function()
 	OpenPaycheckMenu()
 end)
 
 
 function OpenPaycheckMenu()
 	local elements = {}
-	ESX.TriggerServerCallback('dx-paycheck:server:GetDataMoney', function(count)
+	ESX.TriggerServerCallback('dsPaycheckSystem:server:GetDataMoney', function(count)
 		paycheckdata = json.decode(count)
-		table.insert(elements,{label = '&nbsp;&nbsp;<span style="color:#13ea13 ;"> You have ' ..paycheckdata..'$ to collect</span>'})
-		table.insert(elements,{label = 'Withdraw All', value = 'withdraw_all'})
+		table.insert(elements,{label = _U('menu.money_information', paycheckdata)})
+		table.insert(elements,{label = _U('menu.withdraw_all'), value = 'withdraw_all'})
 		if Config.WithdrawQuantity then
-			table.insert(elements, {label = 'Withdraw an amount', value = 'withdraw_quantity'})
+			table.insert(elements, {label = _U('menu.withdraw_quantity'), value = 'withdraw_quantity'})
 		end
+		table.insert(elements,{label = _U('menu.close_menu'), value = 'close'})
 		ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'paycheck_actions', {
-					title    = 'City Hall',
+					title    = _U("menu.menu_title"),
 					align    = 'center-left',
 					elements = elements
 				}, function(data, menu)
@@ -95,7 +149,7 @@ function OpenPaycheckMenu()
 							menu.close()
 							exports.rprogress:Custom({
 								Duration = 5000,
-								Label = "Cashing out...",
+								Label = _U('menu.cashing_out'),
 								Animation = {
 									scenario = "WORLD_HUMAN_CLIPBOARD", 
 									animationDictionary = "idle_a", 
@@ -107,21 +161,21 @@ function OpenPaycheckMenu()
 								}
 							})
 							Citizen.Wait(5000)
-							TriggerServerEvent('dx-paycheck:Payout')
+							TriggerServerEvent('dsPaycheckSystem:Payout')
 						elseif data.current.value == 'withdraw_quantity'then
 							ESX.UI.Menu.Open('dialog', GetCurrentResourceName(), 'withdraw_quantity_count', {
-								title = 'Quantity'
+								title = _('menu.quantity_imput')
 							}, function(data2, menu2)
 								local count = tonumber(data2.value)
 				
 								if count == nil then
-									ESX.ShowNotification('Invalid Quantity')
+									TriggerEvent('dsPaycheckSystem:notification',_U('error.invalid_quantity'))
 								else
 									menu2.close()
 									menu.close()
 									exports.rprogress:Custom({
 										Duration = 5000,
-										Label = "Cashing out...",
+										Label = _U('menu.cashing_out'),
 										Animation = {
 											scenario = "WORLD_HUMAN_CLIPBOARD", 
 											animationDictionary = "idle_a", 
@@ -133,10 +187,10 @@ function OpenPaycheckMenu()
 										}
 									})
 									Citizen.Wait(5000)
-									TriggerServerEvent('dx-paycheck:withdrawMoney', count)
+									TriggerServerEvent('dsPaycheckSystem:withdrawMoney', count)
 								end
 							end)
-						elseif data.current.value == 'Salir' then
+						elseif data.current.value == 'close' then
 							menu.close()
 						end
 		end, function(data, menu)
