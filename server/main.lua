@@ -1,6 +1,7 @@
-ESX	= nil
-TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
-
+if Config.ESXOldVersion then
+	ESX	= nil
+	TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+end
 
 if Config.UseEsExtendedType then
 	RegisterNetEvent('dsPaycheckSystem:AddMoneyEs_Extended')
