@@ -39,14 +39,13 @@ Hello, this is relaunch of my V1 version of the Paycheck System, more cleaned an
 
 # Dependencies:
  * [es_extended](https://github.com/esx-framework/esx_core)
- * [esx_menu_default](https://github.com/esx-framework/esx_core/tree/main/%5Bcore%5D/esx_menu_default)
- * [esx_menu_dialog](https://github.com/esx-framework/esx_core/tree/main/%5Bcore%5D/esx_menu_dialog) 
+ * [esx_menu_default](https://github.com/esx-framework/esx_core/tree/main/%5Bcore%5D/esx_menu_default) or [ox_lib](https://github.com/overextended/ox_lib)
+ * [esx_menu_dialog](https://github.com/esx-framework/esx_core/tree/main/%5Bcore%5D/esx_menu_dialog) or [ox_lib](https://github.com/overextended/ox_lib)
  * [qtarget](https://forum.cfx.re/t/qtarget-a-re-written-and-optimised-third-eye-solution/3984356) or [ox_target ](https://github.com/overextended/ox_target) *optional*
- * [rprogress](https://github.com/Mobius1/rprogress)
-
+ * [rprogress](https://github.com/Mobius1/rprogress) or [ox_lib](https://github.com/overextended/ox_lib)
 
 # Video preview:
 https://streamable.com/k75bef
 
 # Forum link:
-Soon
+https://forum.cfx.re/t/free-esx-qb-soon-dspaychecksystem/
