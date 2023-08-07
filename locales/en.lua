@@ -3,6 +3,7 @@ Locales['en'] = {
         ["invalid_quantity"] = 'Invalid Quantity',
         ["payout_all"] = 'You dont have anything to collect.',
         ["payout_quantity"] = 'You dont have enough money to collect that.',
+        ["action_cancelled"] = 'You cancelled this action!',
     },
     success = {
         ["payout_all"] = "All your paycheck its $ %s ",

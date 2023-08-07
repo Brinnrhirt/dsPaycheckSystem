@@ -151,21 +151,43 @@ function OpenPaycheckMenuDefault()
 				}, function(data, menu)
 						if data.current.value == 'withdraw_all' then
 							menu.close()
-							exports.rprogress:Custom({
-								Duration = 5000,
-								Label = _U('menu.cashing_out'),
-								Animation = {
-									scenario = "WORLD_HUMAN_CLIPBOARD", 
-									animationDictionary = "idle_a", 
-								},
-								DisableControls = {
-									Mouse = false,
-									Player = true,
-									Vehicle = true
-								}
-							})
-							Citizen.Wait(5000)
-							TriggerServerEvent('dsPaycheckSystem:Payout')
+							if Config.ProgressBar == 'rprogress' then 
+								exports.rprogress:Custom({
+									Duration = 5000,
+									Label = _U('menu.cashing_out'),
+									Animation = {
+										scenario = "WORLD_HUMAN_CLIPBOARD", 
+										animationDictionary = "idle_a", 
+									},
+									DisableControls = {
+										Mouse = false,
+										Player = true,
+										Vehicle = true
+									}
+								})
+								Citizen.Wait(5000)
+								TriggerServerEvent('dsPaycheckSystem:Payout')
+							elseif Config.ProgressBar == 'ox_lib' then
+								if lib.progressCircle({
+									duration = 5000,
+									label = _U('menu.cashing_out'),
+									position = 'bottom',
+									useWhileDead = false,
+									canCancel = true,
+									anim = {
+										scenario = 'WORLD_HUMAN_CLIPBOARD'
+									},
+									disable = {
+										move = true,
+										car = true,
+										combat = true
+									}
+								}) then
+									TriggerServerEvent('dsPaycheckSystem:Payout')
+								else
+									TriggerEvent('dsPaycheckSystem:notification',_U('error.action_cancelled'),'error')
+								end
+							end
 						elseif data.current.value == 'withdraw_quantity'then
 							ESX.UI.Menu.Open('dialog', GetCurrentResourceName(), 'withdraw_quantity_count', {
 								title = _('menu.quantity_imput')
@@ -177,21 +199,43 @@ function OpenPaycheckMenuDefault()
 								else
 									menu2.close()
 									menu.close()
-									exports.rprogress:Custom({
-										Duration = 5000,
-										Label = _U('menu.cashing_out'),
-										Animation = {
-											scenario = "WORLD_HUMAN_CLIPBOARD", 
-											animationDictionary = "idle_a", 
-										},
-										DisableControls = {
-											Mouse = false,
-											Player = true,
-											Vehicle = true
-										}
-									})
-									Citizen.Wait(5000)
-									TriggerServerEvent('dsPaycheckSystem:withdrawMoney', count)
+									if Config.ProgressBar == 'rprogress' then 
+										exports.rprogress:Custom({
+											Duration = 5000,
+											Label = _U('menu.cashing_out'),
+											Animation = {
+												scenario = "WORLD_HUMAN_CLIPBOARD", 
+												animationDictionary = "idle_a", 
+											},
+											DisableControls = {
+												Mouse = false,
+												Player = true,
+												Vehicle = true
+											}
+										})
+										Citizen.Wait(5000)
+										TriggerServerEvent('dsPaycheckSystem:withdrawMoney', count)
+									elseif Config.ProgressBar == 'ox_lib' then
+										if lib.progressCircle({
+											duration = 5000,
+											label = _U('menu.cashing_out'),
+											position = 'bottom',
+											useWhileDead = false,
+											canCancel = true,
+											anim = {
+												scenario = 'WORLD_HUMAN_CLIPBOARD'
+											},
+											disable = {
+												move = true,
+												car = true,
+												combat = true
+											}
+										}) then
+											TriggerServerEvent('dsPaycheckSystem:withdrawMoney', count)
+										else
+											TriggerEvent('dsPaycheckSystem:notification',_U('error.action_cancelled'),'error')
+										end
+									end
 								end
 							end)
 						elseif data.current.value == 'close' then
@@ -219,21 +263,43 @@ function OpenPaycheckMenuOX()
 					description = _U('menu.withdraw_all_desc'),
 					icon = 'circle',
 					onSelect = function()
-						exports.rprogress:Custom({
-							Duration = 5000,
-							Label = _U('menu.cashing_out'),
-							Animation = {
-								scenario = "WORLD_HUMAN_CLIPBOARD", 
-								animationDictionary = "idle_a", 
-							},
-							DisableControls = {
-								Mouse = false,
-								Player = true,
-								Vehicle = true
-							}
-						})
-						Citizen.Wait(5000)
-						TriggerServerEvent('dsPaycheckSystem:Payout')
+						if Config.ProgressBar == 'rprogress' then 
+							exports.rprogress:Custom({
+								Duration = 5000,
+								Label = _U('menu.cashing_out'),
+								Animation = {
+									scenario = "WORLD_HUMAN_CLIPBOARD", 
+									animationDictionary = "idle_a", 
+								},
+								DisableControls = {
+									Mouse = false,
+									Player = true,
+									Vehicle = true
+								}
+							})
+							Citizen.Wait(5000)
+							TriggerServerEvent('dsPaycheckSystem:Payout')
+						elseif Config.ProgressBar == 'ox_lib' then
+							if lib.progressCircle({
+								duration = 5000,
+								label = _U('menu.cashing_out'),
+								position = 'bottom',
+								useWhileDead = false,
+								canCancel = true,
+								anim = {
+									scenario = 'WORLD_HUMAN_CLIPBOARD'
+								},
+								disable = {
+									move = true,
+									car = true,
+									combat = true
+								}
+							}) then
+								TriggerServerEvent('dsPaycheckSystem:Payout')
+							else
+								TriggerEvent('dsPaycheckSystem:notification',_U('error.action_cancelled'),'error')
+							end
+						end
 					end,
 				},
 				{
@@ -244,21 +310,43 @@ function OpenPaycheckMenuOX()
 						local input = lib.inputDialog('payCheckAmount', _U('quantity_imput'))
 						if not input then return end
 						print(json.encode(input), input[1])
-						exports.rprogress:Custom({
-							Duration = 5000,
-							Label = _U('menu.cashing_out'),
-							Animation = {
-								scenario = "WORLD_HUMAN_CLIPBOARD", 
-								animationDictionary = "idle_a", 
-							},
-							DisableControls = {
-								Mouse = false,
-								Player = true,
-								Vehicle = true
-							}
-						})
-						Citizen.Wait(5000)
-						TriggerServerEvent('dsPaycheckSystem:withdrawMoney', tonumber(input))
+						if Config.ProgressBar == 'rprogress' then 
+							exports.rprogress:Custom({
+								Duration = 5000,
+								Label = _U('menu.cashing_out'),
+								Animation = {
+									scenario = "WORLD_HUMAN_CLIPBOARD", 
+									animationDictionary = "idle_a", 
+								},
+								DisableControls = {
+									Mouse = false,
+									Player = true,
+									Vehicle = true
+								}
+							})
+							Citizen.Wait(5000)
+							TriggerServerEvent('dsPaycheckSystem:withdrawMoney', count)
+						elseif Config.ProgressBar == 'ox_lib' then
+							if lib.progressCircle({
+								duration = 5000,
+								label = _U('menu.cashing_out'),
+								position = 'bottom',
+								useWhileDead = false,
+								canCancel = true,
+								anim = {
+									scenario = 'WORLD_HUMAN_CLIPBOARD'
+								},
+								disable = {
+									move = true,
+									car = true,
+									combat = true
+								}
+							}) then
+								TriggerServerEvent('dsPaycheckSystem:withdrawMoney', count)
+							else
+								TriggerEvent('dsPaycheckSystem:notification',_U('error.action_cancelled'),'error')
+							end
+						end
 					end,
 				},
 			}

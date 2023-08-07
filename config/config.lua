@@ -9,6 +9,7 @@ Config.Target = true -- To use the Target System, if you have this on true, put 
 Config.TargetSystem = 'qtarget' -- Config your exports target (qtarget, ox_target or custom)
 Config.DrawText = false -- To use the DrawText System, if you have this on true, put the Config.Target in false
 Config.Menu = 'ox_lib' -- (esx or ox_lib)
+Config.ProgressBar = 'ox_lib' -- (rprogress or ox_lib)
 Config.NPCS =  {
     {
         model = "cs_bankman",
