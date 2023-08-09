@@ -75,7 +75,7 @@ AddEventHandler('dsPaycheckSystem:withdrawMoney', function(value)
 					end
 					TriggerClientEvent('dsPaycheckSystem:notification',_source,_U("success.payout_quantity", value),'success')
 				else
-					TriggerClientEvent('dsPaycheckSystem:notification',_source,,U('error.payout_quantity'),'error')
+					TriggerClientEvent('dsPaycheckSystem:notification',_source,_U('error.payout_quantity'),'error')
 				end
 			end
 		end)
@@ -126,7 +126,7 @@ AddEventHandler("dsPaycheckSystem:Payout", function()
 					end
 					TriggerClientEvent('dsPaycheckSystem:notification',_source,_U('success.payout_all', paycheckdb),'success')
 				else
-					TriggerClientEvent('dsPaycheckSystem:notification',_source,U('error.payout_all'),'error')
+					TriggerClientEvent('dsPaycheckSystem:notification',_source,_U('error.payout_all'),'error')
 				end
 		end)
 	else
