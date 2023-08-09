@@ -14,12 +14,12 @@ shared_scripts {
 }
 server_scripts {
     '@oxmysql/lib/MySQL.lua',
-    'config.lua',
+    'config/config.lua',
     'server/main.lua'
 }
 
 client_scripts {
-    'config.lua',
+    'config/config.lua',
     'client/main.lua'
 }
 escrow_ignore {

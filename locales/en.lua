@@ -22,7 +22,6 @@ Locales['en'] = {
     },
     target = {
         ["collect_salary"] = "Collect Salary",
-
     },
     drawtext = {
         ["collect_salary"] = "Collect Salary",
