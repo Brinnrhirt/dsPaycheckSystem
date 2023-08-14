@@ -23,6 +23,8 @@ if Config.Framework == 'QBCore' then
 					job = {"all"},
 					distance = 3.5
 				})
+			elseif Config.TargetSystem == 'custom' then
+				-- Insert Your Custom Code Here
 			end
 		end)
 	end
