@@ -1,5 +1,5 @@
 ### Paycheck System
-Paycheck System script for ESX made by Dennou Studios
+Paycheck System script for ESX and QBCore made by Dennou Studios
 
 
 ### Donations are **greatly** appreciated
