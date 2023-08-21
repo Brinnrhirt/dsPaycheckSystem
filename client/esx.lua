@@ -306,7 +306,7 @@ if Config.Framework == 'ESX' then
 						title = _U('menu.withdraw_quantity'),
 						description = _U('menu.withdraw_quantity_desc'),
 						icon = 'circle',
-						disabled = Config.WithdrawQuantity,
+						disabled = not Config.WithdrawQuantity,
 						onSelect = function()
 							local input = lib.inputDialog(_U('menu.quantity_imput'), {_U('menu.withdraw_quantity')})
 							if not input then return end
