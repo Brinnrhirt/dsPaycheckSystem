@@ -190,7 +190,7 @@ if Config.Framework == 'ESX' then
 								end
 							elseif data.current.value == 'withdraw_quantity'then
 								ESX.UI.Menu.Open('dialog', GetCurrentResourceName(), 'withdraw_quantity_count', {
-									title = _('menu.quantity_imput')
+									title = _U('menu.quantity_imput')
 								}, function(data2, menu2)
 									local count = tonumber(data2.value)
 					
